@@ -77,3 +77,54 @@ Create an environment and install packages:
 
 ```bash
 pip install -r requirements.txt
+```
+
+2) Run training + evaluation
+
+Open and run:
+
+notebooks/task1_pipeline.ipynb
+
+Outputs:
+
+QLoRA checkpoint saved to ./qlora_out
+
+Pruned checkpoint saved to ./qlora_pruned_lora
+
+Figures saved to ./results_figures
+
+Experiments Conducted
+Experiment 1 — Baseline (zero-shot)
+
+Evaluated pretrained Phi-3-mini without fine-tuning to establish baseline accuracy and macro-F1.
+
+Experiment 2 — Full Fine-Tuning (FFT) feasibility
+
+FFT assessed as infeasible on 6GB VRAM due to memory requirements for weights, gradients, optimizer states, and activations.
+
+Experiment 3 — QLoRA fine-tuning (prompt-masked)
+
+QLoRA training with:
+
+LoRA r=8, α=16
+
+4-bit quantization
+
+prompt-masked supervision (loss computed only on class-ID output)
+
+Experiment 4 — Model optimisation (LoRA pruning)
+
+Applied 20% magnitude pruning on LoRA adapter weights (lora_A and lora_B).
+Observed no measurable accuracy/Macro-F1 degradation on the fixed eval subset.
+
+Notes / Limitations
+
+GRPO reinforcement learning was attempted but not completed due to Windows/patch compatibility issues in the RL training stack.
+
+Unstructured pruning introduces sparsity, but inference speedups require sparse-aware kernels/runtime support.
+
+Weakest class observed: Mobile Security, likely due to overlap with Web/Network incident descriptions.
+
+Author
+
+Sai Sumanth Desagani
